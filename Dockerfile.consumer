@@ -1,0 +1,13 @@
+FROM bitnami/spark:3.4.1
+
+USER root
+WORKDIR /app
+
+# Nadaj pełne uprawnienia do katalogu /app
+RUN chmod -R 777 /app
+
+COPY . .
+
+RUN pip install --no-cache-dir joblib scikit-learn
+
+CMD ["spark-submit", "--packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1", "consumer.py"]

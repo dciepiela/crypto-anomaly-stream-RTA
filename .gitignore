@@ -1,0 +1,46 @@
+# 👇 Zabezpiecza dane wrażliwe
+.env
+*.env
+
+# 👇 Python cache i pliki tymczasowe
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# 👇 Pliki tymczasowe z edytorów/IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# 👇 Jupyter i Streamlit
+.ipynb_checkpoints/
+.streamlit/
+
+# 👇 Pliki wygenerowane
+*.db
+*.sqlite3
+*.csv
+*.parquet
+
+# 👇 Pliki z danych wejściowych (opcjonalnie)
+data/
+datasets/
+
+# 👇 Docker/kompilacja
+*.pid
+*.bak
+*.tar
+*.gz
+*.egg-info/
+dist/
+build/
+
+# 👇 Spark logs (jeśli logujesz lokalnie)
+spark-warehouse/
+
+# 👇 Logs i tymczasowe pliki z aplikacji
+logs/
+tmp/

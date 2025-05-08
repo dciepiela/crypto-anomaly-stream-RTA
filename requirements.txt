@@ -1,0 +1,9 @@
+kafka-python
+requests
+pyspark
+streamlit
+scikit-learn
+joblib
+plotly
+streamlit-autorefresh
+python-dotenv
