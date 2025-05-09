@@ -7,12 +7,18 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     ports:
       - "9092:9092"
     environment:
@@ -20,29 +26,41 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "kafka:9092", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   producer:
     build: .
     container_name: crypto_producer
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     volumes:
       - .:/app
     env_file:
       - .env
-    command: sh -c "sleep 30 && python producer.py"
+    command: sh -c "python producer.py"
+    restart: on-failure
+
   consumer:
     build:
       context: .
       dockerfile: Dockerfile.consumer
     container_name: crypto_consumer
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     volumes:
       - .:/app
     env_file:
       - .env
     command: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1 consumer.py
+    restart: on-failure
+
   streamlit:
     build: .
     container_name: crypto_streamlit
