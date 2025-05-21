@@ -51,8 +51,8 @@ System do wykrywania anomalii w danych rynkowych kryptowalut w czasie rzeczywist
 
 🚀 Uruchomienie
 1. Wytrenuj model offline:
-pip install -r requirements.txt
-python train_isolation_forest.py
+- pip install -r requirements.txt
+- python train_isolation_forest.py
 
 Tworzy pliki:
 - isolation_forest_model.pkl
