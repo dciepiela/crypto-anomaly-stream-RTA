@@ -6,8 +6,11 @@ WORKDIR /app
 # Nadaj pełne uprawnienia do katalogu /app
 RUN chmod -R 777 /app
 
-COPY . .
+# Kopiuj requirements.txt i zainstaluj zależności
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir joblib scikit-learn
+# Kopiuj resztę plików aplikacji
+COPY . .
 
 CMD ["spark-submit", "--packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1", "consumer.py"]
